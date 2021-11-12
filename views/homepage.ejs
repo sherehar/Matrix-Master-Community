@@ -1,0 +1,25 @@
+<%- include('./components/header')  %>
+    
+    <% if (questions.length){ %>
+        <h2>There are <%= questions.length%> Questions</h2>
+        <% questions.forEach((question) => { %>
+            <div class="card question mb-3">
+                <div class="row g-0">
+                    <div class="col-md-10">
+                        <div class="card-body">
+                            <h3 class="card-title"><%= question.question %></h3>
+                            <p class="card-text"><%= question.description.substr(0,200) %></p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <p class="card-text"><small class="text-muted"><%= %>
+                            <%= question.createdAt.getDate() %>/<%= question.createdAt.getMonth() %>/<%= question.createdAt.getFullYear() %></small></small></p>
+                        <a href="/Question/<%= question.id %>" class="card-link">See More</a>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <h2>There is <%= questions.length%> Questions</h2>
+    <% } %>
+<%- include('./components/footer')  %>

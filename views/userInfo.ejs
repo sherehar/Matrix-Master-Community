@@ -1,0 +1,44 @@
+<%- include('./components/header')  %>
+    <h4>My Profile</h4>
+        <% if (info) {%>
+            <div class="card question mb-3">
+                <div class="row g-0">
+                    <div class="col-md-8">
+                        <div class="card-body" >
+                            <h3 class="card-title"><%= info.userName.toUpperCase() %></h3>
+                            <p class="card-text"><%= info.email %></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if (questions.length) {%>
+                <h4>My questions (<%= questions.length%>):</h4>
+                <% questions.forEach(question => {%>
+                <div class="card question mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-8">
+                            <div class="card-body" >
+                                <h3 class="card-title"><%= question.question %></h3>
+                                <p class="card-text"><%= question.description %></p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="space">
+                                <p class="card-text"><small class="text-muted"><%= question.createdAt.getDate() %>/<%= question.createdAt.getMonth() %>/<%= question.createdAt.getFullYear() %></small></p>
+                            </div>     
+                        </div>
+                            <div class="col-md-2">
+                                <div class="space">
+                                    <a href="/Question/Edit/<%= question._id %>" ><img src="https://img.icons8.com/fluency/32/000000/edit.png"/></a>
+                                </div>
+                                <div class="space">
+                                    <a href="/Question/Delete/<%= question._id %>"><img src="https://img.icons8.com/fluency/32/000000/filled-trash.png"/></a>
+                                </div>     
+                            </div>
+                    </div>
+                </div>
+                <% })%>
+            <%}%>
+        <% } %>
+
+<%- include('./components/footer')  %>
