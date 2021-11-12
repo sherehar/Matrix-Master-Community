@@ -1,28 +1,12 @@
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const Question = require('../models/question');
+const { handleErrors , handleUserErrors} = require('../config/errorsHandler');
+
 
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = id => jwt.sign({ id }, 'mmc', { expiresIn: maxAge});
-// const handelErrors = (err) => {
-//     let errors = {username : '' , email : '' , password : ''}
-//     if(err.message === 'incorrect Email'){
-//     errors.email = 'That email is not registered'
-//     }
-//     if(err.message === 'incorrect password'){
-//     errors.password = 'That password is not correct'
-//     }
-//     if(err.code === 11000){
-//     errors.email = 'That email is already registered'
-//     return errors;
-//     }
-//     if(err.message.includes("user validation failed")) {
-//     Object.values(err.errors).forEach(({properties}) =>{
-//         errors[properties.path] = properties.message;
-//     });
-//     }
-//     return(errors)
-// }
+
 
 const userInfo = (req,res) =>{
     const userId = req.params.id;
@@ -35,9 +19,9 @@ const userInfo = (req,res) =>{
         })
         .catch(err => res.send(err))
 }
-const logInF = async (req, res) => {
+    const logInF = async (req, res) => {
     if(req.method === 'GET'){
-        res.render('logIn', {pageTitle: 'Log In'})
+        res.render('logIn', {pageTitle: 'Log In', errors:null})
     };
 
     if(req.method === 'POST'){
@@ -49,8 +33,9 @@ const logInF = async (req, res) => {
             res.redirect('/');
         }
         catch( err ) {
-            // const errors = handelErrors (err)
-            // res.status(400).send({ errors })
+            const errors = handleUserErrors(err)
+            res.render('logIn', {pageTitle: 'log In',errors})
+            
         }
     };
 }
@@ -58,7 +43,7 @@ const logInF = async (req, res) => {
 const signUpF = async (req, res) => {
     const pageTitle = 'Sign Up';
     if(req.method === 'GET'){
-        res.render('SignUp', {pageTitle});
+        res.render('SignUp', {pageTitle: 'sign Up', errors: null});
     };
     if(req.method === 'POST'){
         const { userName, email, reEmail, password } = req.body;
@@ -70,8 +55,8 @@ const signUpF = async (req, res) => {
             res.redirect('/')
         }
         catch(err){
-            // const errors = handelErrors (err)
-            // res.status(400).send({errors})        
+            const errors = handleUserErrors(err)
+            res.render('signUp',{pageTitle: ' sign Up', errors})
         }
         
     };
